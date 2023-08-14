@@ -1,0 +1,24 @@
+{
+  "name": "langchain-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:write": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "@google-ai/generativelanguage": "^1.0.0",
+    "@google-cloud/aiplatform": "^3.0.0",
+    "google-auth-library": "^9.0.0",
+    "langchain": "^0.0.127"
+  }
+}
