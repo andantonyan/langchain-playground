@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "quickstart": "node src/quickstart.js",
+    "prompts": "node src/prompts.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -20,6 +21,6 @@
     "@google-cloud/aiplatform": "^3.0.0",
     "dotenv": "^16.3.1",
     "google-auth-library": "^9.0.0",
-    "langchain": "^0.0.127"
+    "langchain": "^0.0.128"
   }
 }
