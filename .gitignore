@@ -40,3 +40,4 @@ testem.log
 Thumbs.db
 
 *service-account.json
+.env.local
