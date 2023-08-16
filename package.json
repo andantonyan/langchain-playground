@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "quickstart": "node src/quickstart.js",
-    "prompts": "node src/prompts.js",
+    "prompt-templates": "node src/prompt-templates.js",
+    "prompt-example-selectors": "node src/prompt-example-selectors.js",
+    "prompt-similarity": "node src/prompt-similarity.js",
+    "prompt-selectors": "node src/prompt-selectors.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "type": "module",
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "prettier": "^2.8.8"
@@ -21,6 +24,7 @@
     "@google-cloud/aiplatform": "^3.0.0",
     "dotenv": "^16.3.1",
     "google-auth-library": "^9.0.0",
-    "langchain": "^0.0.128"
+    "hnswlib-node": "^2.0.0",
+    "langchain": "^0.0.129"
   }
 }
