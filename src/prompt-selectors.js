@@ -1,23 +1,23 @@
+import { LLMChain, StuffDocumentsChain } from 'langchain/chains';
 import { OpenAI } from 'langchain/llms/openai';
 import {
   ChatPromptTemplate,
   ConditionalPromptSelector,
   HumanMessagePromptTemplate,
-  isChatModel,
   PromptTemplate,
   SystemMessagePromptTemplate,
+  isChatModel,
 } from 'langchain/prompts';
 
 import './env.js';
-import { LLMChain, StuffDocumentsChain } from "langchain/chains";
 
 const openAI = new OpenAI({});
 const DEFAULT_QA_PROMPT = PromptTemplate.fromTemplate(
-  'Translate this sentence from English to French. I love programming.'
+  'Translate this sentence from English to French. I love programming.',
 );
 const CHAT_PROMPT = ChatPromptTemplate.fromPromptMessages([
   SystemMessagePromptTemplate.fromTemplate(
-    'You are a helpful assistant that translates {input_language} to {output_language}.'
+    'You are a helpful assistant that translates {input_language} to {output_language}.',
   ),
   HumanMessagePromptTemplate.fromTemplate('{text}'),
 ]);

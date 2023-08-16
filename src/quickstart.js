@@ -46,7 +46,7 @@ async function promptTemplate() {
   console.log(`llmFormattedPrompt: ${llmFormattedPrompt}`);
 
   const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-    'You are a helpful assistant that translates {input_language} to {output_language}.'
+    'You are a helpful assistant that translates {input_language} to {output_language}.',
   );
   const humanMessagePrompt = HumanMessagePromptTemplate.fromTemplate({ text });
 
@@ -77,7 +77,7 @@ async function llsChains() {
 
 async function chatChains() {
   const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-    'You are a helpful assistant that translates {input_language} to {output_language}.'
+    'You are a helpful assistant that translates {input_language} to {output_language}.',
   );
   const humanMessagePrompt = HumanMessagePromptTemplate.fromTemplate('{text}');
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([systemMessagePrompt, humanMessagePrompt]);
@@ -131,7 +131,7 @@ async function chatAgents() {
     {
       agentType: 'openai-functions',
       verbose: true,
-    }
+    },
   );
 
   const result = await executor.run('What is the temperature in New York?');

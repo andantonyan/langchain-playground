@@ -22,7 +22,7 @@ async function run() {
     ],
     new OpenAIEmbeddings(),
     HNSWLib,
-    { k: 1 }
+    { k: 1 },
   );
 
   // Create a FewShotPromptTemplate that will use the example selector.

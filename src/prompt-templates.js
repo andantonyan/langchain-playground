@@ -9,7 +9,7 @@ import {
 async function basic() {
   const prompt = PromptTemplate.fromTemplate(
     `You are a naming consultant for new companies.
-What is a good name for a company that makes {product}?`
+What is a good name for a company that makes {product}?`,
   );
 
   const formattedPrompt = await prompt.format({
@@ -50,7 +50,7 @@ What is a good name for a company that makes {product}?`
   console.log(formattedMultipleInputPrompt);
 
   const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
-    'You are a helpful assistant that translates {input_language} to {output_language}.'
+    'You are a helpful assistant that translates {input_language} to {output_language}.',
   );
   const humanMessagePrompt = HumanMessagePromptTemplate.fromTemplate('{text}');
   const formatSystemMessagePrompt = await systemMessagePrompt.format({

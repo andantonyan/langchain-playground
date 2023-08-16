@@ -19,7 +19,7 @@ async function run() {
     {
       examplePrompt,
       maxLength: 25,
-    }
+    },
   );
 
   // Create a FewShotPromptTemplate that will use the example selector.
