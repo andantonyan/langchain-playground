@@ -9,6 +9,10 @@
     "prompt-example-selectors": "node src/prompt-example-selectors.js",
     "prompt-similarity": "node src/prompt-similarity.js",
     "prompt-selectors": "node src/prompt-selectors.js",
+    "llm-basic": "node src/llm-basic.js",
+    "llm-caching": "node src/llm-caching.js",
+    "llm-streaming": "node src/llm-streaming.js",
+    "llm-event-subscription": "node src/llm-event-subscription.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -20,11 +24,14 @@
     "prettier": "^3.0.2"
   },
   "dependencies": {
+    "@gomomento/sdk": "^1.31.0",
     "@google-ai/generativelanguage": "^1.0.0",
     "@google-cloud/aiplatform": "^3.0.0",
     "dotenv": "^16.3.1",
     "google-auth-library": "^9.0.0",
     "hnswlib-node": "^2.0.0",
-    "langchain": "^0.0.129"
+    "ioredis": "^5.3.2",
+    "langchain": "^0.0.129",
+    "openai": "^4.0.0"
   }
 }
