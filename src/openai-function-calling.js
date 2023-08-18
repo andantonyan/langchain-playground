@@ -36,7 +36,7 @@ async function basic() {
     function_call: { name: 'extractor' },
   });
   const result = await model.invoke([new HumanMessage('What a beautiful day!')]);
-/*
+  /*
  AIMessage {
   ...
   additional_kwargs: {

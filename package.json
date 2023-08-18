@@ -15,6 +15,7 @@
     "llm-event-subscription": "node src/llm-event-subscription.js",
     "chat-basic": "node src/chat-basic.js",
     "openai-function-calling": "node src/openai-function-calling.js",
+    "llm-chain": "node src/llm-chain.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
