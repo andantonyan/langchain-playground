@@ -16,6 +16,13 @@
     "chat-basic": "node src/chat-basic.js",
     "openai-function-calling": "node src/openai-function-calling.js",
     "llm-chain": "node src/llm-chain.js",
+    "output-parser": "node src/output-parser.js",
+    "output-parser-llm-chain": "node src/output-parser-llm-chain.js",
+    "bytes-output-parser": "node src/bytes-output-parser.js",
+    "combining-output-parsers": "node src/combining-output-parsers.js",
+    "list-parser": "node src/list-parser.js",
+    "custom-list-parser": "node src/custom-list-parser.js",
+    "auto-fixing-parser": "node src/auto-fixing-parser.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },

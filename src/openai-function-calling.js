@@ -31,6 +31,7 @@ async function basic() {
   };
   const model = new ChatOpenAI({
     modelName: 'gpt-4',
+    verbose: true,
   }).bind({
     functions: [extractionFunctionSchema],
     function_call: { name: 'extractor' },
@@ -68,6 +69,7 @@ async function usingZod() {
   // Omit "function_call" if you want the model to choose a function to call.
   const model = new ChatOpenAI({
     modelName: 'gpt-4',
+    verbose: true,
   }).bind({
     functions: [
       {
