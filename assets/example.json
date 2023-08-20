@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "isActive": true,
+      "dateCreated": "2023-01-05T14:48:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "janedoe@example.com",
+      "isActive": false,
+      "dateCreated": "2023-05-11T09:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Alice Smith",
+      "email": "alicesmith@example.com",
+      "isActive": true,
+      "dateCreated": "2023-05-11T09:30:00.000Z"
+    }
+  ],
+  "books": [
+    {
+      "id": 101,
+      "title": "Book One",
+      "author": "Author One",
+      "publicationYear": 2023
+    },
+    {
+      "id": 102,
+      "title": "Book Two",
+      "author": "Author Two",
+      "publicationYear": 2022
+    },
+    {
+      "id": 103,
+      "title": "Book Three",
+      "author": "Author Three",
+      "publicationYear": 2021
+    }
+  ]
+}
