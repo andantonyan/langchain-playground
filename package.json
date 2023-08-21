@@ -26,6 +26,7 @@
     "document-loader": "node src/document-loader.js",
     "document-transformers": "node src/document-transformers.js",
     "text-embedding": "node src/text-embedding.js",
+    "vector-stores": "node src/vector-stores.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -53,6 +54,7 @@
     "langchain": "^0.0.131",
     "openai": "^4.0.1",
     "pdf-parse": "^1.1.1",
+    "peggy": "^3.0.2",
     "zod": "^3.22.2",
     "zod-to-json-schema": "^3.21.4"
   }
