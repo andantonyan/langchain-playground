@@ -25,6 +25,7 @@
     "auto-fixing-parser": "node src/auto-fixing-parser.js",
     "document-loader": "node src/document-loader.js",
     "document-transformers": "node src/document-transformers.js",
+    "text-embedding": "node src/text-embedding.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
