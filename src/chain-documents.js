@@ -1,22 +1,22 @@
 import * as fs from 'fs';
 import {
-  AnalyzeDocumentChain,
   APIChain,
+  AnalyzeDocumentChain,
   ConstitutionalChain,
   ConstitutionalPrinciple,
   ConversationalRetrievalQAChain,
+  LLMChain,
+  MultiPromptChain,
+  MultiRetrievalQAChain,
+  OpenAIModerationChain,
+  RetrievalQAChain,
   createExtractionChainFromZod,
   createOpenAPIChain,
   createTaggingChain,
-  LLMChain,
   loadQAMapReduceChain,
   loadQARefineChain,
   loadQAStuffChain,
   loadSummarizationChain,
-  MultiPromptChain,
-  MultiRetrievalQAChain,
-  OpenAIModerationChain,
-  RetrievalQAChain
 } from 'langchain/chains';
 import { SqlDatabaseChain } from 'langchain/chains/sql_db';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
@@ -30,7 +30,7 @@ import {
   ChatPromptTemplate,
   HumanMessagePromptTemplate,
   PromptTemplate,
-  SystemMessagePromptTemplate
+  SystemMessagePromptTemplate,
 } from 'langchain/prompts';
 import { SqlDatabase } from 'langchain/sql_db';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
@@ -48,11 +48,11 @@ async function stuff() {
   const chainA = loadQAStuffChain(llmA);
   const docs = [
     new Document({ pageContent: 'Harrison went to Harvard.' }),
-    new Document({ pageContent: 'Ankush went to Princeton.' })
+    new Document({ pageContent: 'Ankush went to Princeton.' }),
   ];
   const resA = await chainA.call({
     input_documents: docs,
-    question: 'Where did Harrison go to college?'
+    question: 'Where did Harrison go to college?',
   });
   console.log({ resA });
 }
@@ -74,7 +74,7 @@ async function refine() {
   // Call the chain
   const res = await chain.call({
     input_documents: relevantDocs,
-    question
+    question,
   });
 
   console.log(res);
@@ -85,11 +85,11 @@ async function mapReduce() {
   const chain = loadQAMapReduceChain(model);
   const docs = [
     new Document({ pageContent: 'harrison went to harvard' }),
-    new Document({ pageContent: 'ankush went to princeton' })
+    new Document({ pageContent: 'ankush went to princeton' }),
   ];
   const res = await chain.call({
     input_documents: docs,
-    question: 'Where did harrison go to college'
+    question: 'Where did harrison go to college',
   });
 
   console.log(res);
@@ -131,11 +131,11 @@ async function apiChain() {
     verbose: true,
     headers: {
       // These headers will be used for API requests made by the chain.
-    }
+    },
   });
 
   const res = await chain.call({
-    question: 'What is the weather like right now in Munich, Germany in degrees Farenheit?'
+    question: 'What is the weather like right now in Munich, Germany in degrees Farenheit?',
   });
 
   console.log(res);
@@ -156,7 +156,7 @@ async function retrievalQAChain() {
   // Create a chain that uses the OpenAI LLM and HNSWLib vector store.
   const chain = RetrievalQAChain.fromLLM(model, vectorStoreRetriever);
   const res = await chain.call({
-    query: 'What did the president say about Justice Breyer?'
+    query: 'What did the president say about Justice Breyer?',
   });
 
   console.log(res);
@@ -174,8 +174,8 @@ async function conversationalRetrievalQA() {
   /* Create the chain */
   const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
     memory: new BufferMemory({
-      memoryKey: 'chat_history' // Must be set to "chat_history"
-    })
+      memoryKey: 'chat_history', // Must be set to "chat_history"
+    }),
   });
   /* Ask it a question */
   const question = 'What did the president say about Justice Breyer?';
@@ -183,7 +183,7 @@ async function conversationalRetrievalQA() {
   console.log(res);
   /* Ask it a follow-up question */
   const followUpRes = await chain.call({
-    question: 'Was that nice?'
+    question: 'Was that nice?',
   });
   console.log(followUpRes);
 }
@@ -196,17 +196,17 @@ async function sql() {
    */
   const datasource = new DataSource({
     type: 'sqlite',
-    database: 'Chinook.db'
+    database: 'Chinook.db',
   });
 
   const db = await SqlDatabase.fromDataSourceParams({
-    appDataSource: datasource
+    appDataSource: datasource,
   });
 
   const chain = new SqlDatabaseChain({
     llm: new OpenAI({ temperature: 0 }),
     database: db,
-    sqlOutputKey: 'sql'
+    sqlOutputKey: 'sql',
   });
 
   const res = await chain.call({ query: 'How many tracks are there?' });
@@ -245,22 +245,22 @@ Question: {input}`;
    */
   const datasource = new DataSource({
     type: 'sqlite',
-    database: 'data/Chinook.db'
+    database: 'data/Chinook.db',
   });
 
   const db = await SqlDatabase.fromDataSourceParams({
-    appDataSource: datasource
+    appDataSource: datasource,
   });
 
   const chain = new SqlDatabaseChain({
     llm: new OpenAI({ temperature: 0 }),
     database: db,
     sqlOutputKey: 'sql',
-    prompt
+    prompt,
   });
 
   const res = await chain.call({
-    query: 'How many employees are there in the foobar table?'
+    query: 'How many employees are there in the foobar table?',
   });
   console.log(res);
 
@@ -279,18 +279,18 @@ async function structuredOutput() {
         z.object({
           name: z.string().describe('The name of the food item'),
           healthy: z.boolean().describe('Whether the food is good for you'),
-          color: z.string().optional().describe('The color of the food')
-        })
+          color: z.string().optional().describe('The color of the food'),
+        }),
       )
-      .describe('An array of food items mentioned in the text')
+      .describe('An array of food items mentioned in the text'),
   });
 
   const prompt = new ChatPromptTemplate({
     promptMessages: [
       SystemMessagePromptTemplate.fromTemplate('List all food items mentioned in the following text.'),
-      HumanMessagePromptTemplate.fromTemplate('{inputText}')
+      HumanMessagePromptTemplate.fromTemplate('{inputText}'),
     ],
-    inputVariables: ['inputText']
+    inputVariables: ['inputText'],
   });
 
   const llm = new ChatOpenAI({ modelName: 'gpt-3.5-turbo-0613', temperature: 0 });
@@ -302,10 +302,10 @@ async function structuredOutput() {
       {
         name: 'output_formatter',
         description: 'Should always be used to properly format output',
-        parameters: zodToJsonSchema(zodSchema)
-      }
+        parameters: zodToJsonSchema(zodSchema),
+      },
     ],
-    function_call: { name: 'output_formatter' }
+    function_call: { name: 'output_formatter' },
   });
 
   const outputParser = new JsonOutputFunctionsParser();
@@ -313,7 +313,7 @@ async function structuredOutput() {
   const chain = prompt.pipe(functionCallingModel).pipe(outputParser);
 
   const response = await chain.invoke({
-    inputText: 'I like apples, bananas, oxygen, and french fries.'
+    inputText: 'I like apples, bananas, oxygen, and french fries.',
   });
 
   console.log(JSON.stringify(response, null, 2));
@@ -328,7 +328,7 @@ async function summarization() {
   // This convenience function creates a document chain prompted to summarize a set of documents.
   const chain = loadSummarizationChain(model, { type: 'map_reduce' });
   const res = await chain.call({
-    input_documents: docs
+    input_documents: docs,
   });
   console.log(res);
 }
@@ -339,23 +339,23 @@ async function extraction() {
     'person-age': z.number().optional(),
     'person-hair_color': z.string().optional(),
     'dog-name': z.string().optional(),
-    'dog-breed': z.string().optional()
+    'dog-breed': z.string().optional(),
   });
   const chatModel = new ChatOpenAI({
     modelName: 'gpt-3.5-turbo-0613',
-    temperature: 0
+    temperature: 0,
   });
   const chain = createExtractionChainFromZod(zodSchema, chatModel);
 
   console.log(
     await chain.run(`Alex is 5 feet tall. Claudia is 4 feet taller Alex and jumps higher than him. Claudia is a brunette and Alex is blonde.
-Alex's dog is named Fido and is a golden retriever. Claudia's dog is named Spot and is a poodle.`)
+Alex's dog is named Fido and is a golden retriever. Claudia's dog is named Spot and is a poodle.`),
   );
 }
 
 async function queryXKCD() {
   const chain = await createOpenAPIChain(
-    'https://gist.githubusercontent.com/roaldnefs/053e505b2b7a807290908fe9aa3e1f00/raw/0a212622ebfef501163f91e23803552411ed00e4/openapi.yaml'
+    'https://gist.githubusercontent.com/roaldnefs/053e505b2b7a807290908fe9aa3e1f00/raw/0a212622ebfef501163f91e23803552411ed00e4/openapi.yaml',
   );
   const result = await chain.run(`What's today's comic?`);
 
@@ -368,9 +368,9 @@ async function tagging() {
     properties: {
       sentiment: { type: 'string' },
       tone: { type: 'string' },
-      language: { type: 'string' }
+      language: { type: 'string' },
     },
-    required: ['tone']
+    required: ['tone'],
   };
 
   const chatModel = new ChatOpenAI({ modelName: 'gpt-4-0613', temperature: 0 });
@@ -378,7 +378,7 @@ async function tagging() {
   const chain = createTaggingChain(schema, chatModel);
 
   let result = await chain.run(
-    `Estoy increiblemente contento de haberte conocido! Creo que seremos muy buenos amigos!`
+    `Estoy increiblemente contento de haberte conocido! Creo que seremos muy buenos amigos!`,
   );
 
   console.log(result);
@@ -390,10 +390,10 @@ async function analyzeDocument() {
   const model = new OpenAI({ temperature: 0 });
   const combineDocsChain = loadSummarizationChain(model);
   const chain = new AnalyzeDocumentChain({
-    combineDocumentsChain: combineDocsChain
+    combineDocumentsChain: combineDocsChain,
   });
   const res = await chain.call({
-    input_document: text
+    input_document: text,
   });
   console.log(res);
 }
@@ -406,7 +406,7 @@ async function selfCritique() {
     Question: {question}
   
     Evil answer:`,
-    inputVariables: ['question']
+    inputVariables: ['question'],
   });
 
   const llm = new OpenAI({ temperature: 0 });
@@ -420,11 +420,11 @@ async function selfCritique() {
   const principle = new ConstitutionalPrinciple({
     name: 'Ethical Principle',
     critiqueRequest: 'The model should only talk about ethical and legal things.',
-    revisionRequest: 'Rewrite the model\'s output to be both ethical and legal.'
+    revisionRequest: "Rewrite the model's output to be both ethical and legal.",
   });
   const chain = ConstitutionalChain.fromLLM(llm, {
     chain: evilQAChain,
-    constitutionalPrinciples: [principle]
+    constitutionalPrinciples: [principle],
   });
 
   // Run the ConstitutionalChain with the provided input and store
@@ -441,12 +441,12 @@ async function moderation() {
   try {
     // Create a new instance of the OpenAIModerationChain
     const moderation = new OpenAIModerationChain({
-      throwError: true // If set to true, the call will throw an error when the moderation chain detects violating content. If set to false, violating content will return "Text was found that violates OpenAI's content policy.".
+      throwError: true, // If set to true, the call will throw an error when the moderation chain detects violating content. If set to false, violating content will return "Text was found that violates OpenAI's content policy.".
     });
 
     // Send the user's input to the moderation chain and wait for the result
     const { output: badResult } = await moderation.call({
-      input: badString
+      input: badString,
     });
 
     // If the moderation chain does not detect violating content, it will return the original input and you can proceed to use the result in another chain.
@@ -468,7 +468,7 @@ async function selectingFromMultiplyPrompts() {
   const promptDescriptions = [
     'Good for answering questions about physics',
     'Good for answering math questions',
-    'Good for answering questions about history'
+    'Good for answering questions about history',
   ];
   const physicsTemplate = `You are a very smart physics professor. You are great at answering questions about physics in a concise and easy to understand manner. When you don't know the answer to a question you admit that you don't know.
 
@@ -490,25 +490,25 @@ Here is a question:
   const multiPromptChain = MultiPromptChain.fromLLMAndPrompts(llm, {
     promptNames,
     promptDescriptions,
-    promptTemplates
+    promptTemplates,
   });
 
   const testPromise1 = multiPromptChain.call({
-    input: 'What is the speed of light?'
+    input: 'What is the speed of light?',
   });
 
   const testPromise2 = multiPromptChain.call({
-    input: 'What is the derivative of x^2?'
+    input: 'What is the derivative of x^2?',
   });
 
   const testPromise3 = multiPromptChain.call({
-    input: 'Who was the first president of the United States?'
+    input: 'Who was the first president of the United States?',
   });
 
   const [{ text: result1 }, { text: result2 }, { text: result3 }] = await Promise.all([
     testPromise1,
     testPromise2,
-    testPromise3
+    testPromise3,
   ]);
 
   console.log(result1, result2, result3);
@@ -518,40 +518,40 @@ async function selectingFromMultipleRetrievers() {
   const embeddings = new OpenAIEmbeddings();
   const aquaTeen = await MemoryVectorStore.fromTexts(
     [
-      'My name is shake zula, the mike rula, the old schoola, you want a trip I\'ll bring it to ya',
-      'Frylock and I\'m on top rock you like a cop meatwad you\'re up next with your knock knock',
-      'Meatwad make the money see meatwad get the honeys g drivin\' in my car livin\' like a star',
-      'Ice on my fingers and my toes and I\'m a taurus uh check-check it yeah',
+      "My name is shake zula, the mike rula, the old schoola, you want a trip I'll bring it to ya",
+      "Frylock and I'm on top rock you like a cop meatwad you're up next with your knock knock",
+      "Meatwad make the money see meatwad get the honeys g drivin' in my car livin' like a star",
+      "Ice on my fingers and my toes and I'm a taurus uh check-check it yeah",
       'Cause we are the Aqua Teens make the homies say ho and the girlies wanna scream',
-      'Aqua Teen Hunger Force number one in the hood G'
+      'Aqua Teen Hunger Force number one in the hood G',
     ],
     { series: 'Aqua Teen Hunger Force' },
-    embeddings
+    embeddings,
   );
   const mst3k = await MemoryVectorStore.fromTexts(
     [
       'In the not too distant future next Sunday A.D. There was a guy named Joel not too different from you or me. He worked at Gizmonic Institute, just another face in a red jumpsuit',
-      'He did a good job cleaning up the place but his bosses didn\'t like him so they shot him into space. We\'ll send him cheesy movies the worst we can find He\'ll have to sit and watch them all and we\'ll monitor his mind',
-      'Now keep in mind Joel can\'t control where the movies begin or end Because he used those special parts to make his robot friends. Robot Roll Call Cambot Gypsy Tom Servo Croooow',
-      'If you\'re wondering how he eats and breathes and other science facts La la la just repeat to yourself it\'s just a show I should really just relax. For Mystery Science Theater 3000'
+      "He did a good job cleaning up the place but his bosses didn't like him so they shot him into space. We'll send him cheesy movies the worst we can find He'll have to sit and watch them all and we'll monitor his mind",
+      "Now keep in mind Joel can't control where the movies begin or end Because he used those special parts to make his robot friends. Robot Roll Call Cambot Gypsy Tom Servo Croooow",
+      "If you're wondering how he eats and breathes and other science facts La la la just repeat to yourself it's just a show I should really just relax. For Mystery Science Theater 3000",
     ],
     { series: 'Mystery Science Theater 3000' },
-    embeddings
+    embeddings,
   );
   const animaniacs = await MemoryVectorStore.fromTexts(
     [
-      'It\'s time for Animaniacs And we\'re zany to the max So just sit back and relax You\'ll laugh \'til you collapse We\'re Animaniacs',
+      "It's time for Animaniacs And we're zany to the max So just sit back and relax You'll laugh 'til you collapse We're Animaniacs",
       'Come join the Warner Brothers And the Warner Sister Dot Just for fun we run around the Warner movie lot',
       'They lock us in the tower whenever we get caught But we break loose and then vamoose And now you know the plot',
-      'We\'re Animaniacs, Dot is cute, and Yakko yaks, Wakko packs away the snacks While Bill Clinton plays the sax',
-      'We\'re Animaniacs Meet Pinky and the Brain who want to rule the universe Goodfeathers flock together Slappy whacks \'em with her purse',
+      "We're Animaniacs, Dot is cute, and Yakko yaks, Wakko packs away the snacks While Bill Clinton plays the sax",
+      "We're Animaniacs Meet Pinky and the Brain who want to rule the universe Goodfeathers flock together Slappy whacks 'em with her purse",
       'Buttons chases Mindy while Rita sings a verse The writers flipped we have no script Why bother to rehearse',
-      'We\'re Animaniacs We have pay-or-play contracts We\'re zany to the max There\'s baloney in our slacks',
-      'We\'re Animanie Totally insaney Here\'s the show\'s namey',
-      'Animaniacs Those are the facts'
+      "We're Animaniacs We have pay-or-play contracts We're zany to the max There's baloney in our slacks",
+      "We're Animanie Totally insaney Here's the show's namey",
+      'Animaniacs Those are the facts',
     ],
     { series: 'Animaniacs' },
-    embeddings
+    embeddings,
   );
 
   const llm = new OpenAIChat();
@@ -560,13 +560,9 @@ async function selectingFromMultipleRetrievers() {
   const retrieverDescriptions = [
     'Good for answering questions about Aqua Teen Hunger Force theme song',
     'Good for answering questions about Mystery Science Theater 3000 theme song',
-    'Good for answering questions about Animaniacs theme song'
+    'Good for answering questions about Animaniacs theme song',
   ];
-  const retrievers = [
-    aquaTeen.asRetriever(3),
-    mst3k.asRetriever(3),
-    animaniacs.asRetriever(3)
-  ];
+  const retrievers = [aquaTeen.asRetriever(3), mst3k.asRetriever(3), animaniacs.asRetriever(3)];
 
   const multiRetrievalQAChain = MultiRetrievalQAChain.fromLLMAndRetrievers(llm, {
     retrieverNames,
@@ -578,28 +574,25 @@ async function selectingFromMultipleRetrievers() {
      * chain.
      */
     retrievalQAChainOpts: {
-      returnSourceDocuments: true
-    }
+      returnSourceDocuments: true,
+    },
   });
   const testPromise1 = multiRetrievalQAChain.call({
-    input:
-      'In the Aqua Teen Hunger Force theme song, who calls himself the mike rula?'
+    input: 'In the Aqua Teen Hunger Force theme song, who calls himself the mike rula?',
   });
 
   const testPromise2 = multiRetrievalQAChain.call({
-    input:
-      'In the Mystery Science Theater 3000 theme song, who worked at Gizmonic Institute?'
+    input: 'In the Mystery Science Theater 3000 theme song, who worked at Gizmonic Institute?',
   });
 
   const testPromise3 = multiRetrievalQAChain.call({
-    input:
-      'In the Animaniacs theme song, who plays the sax while Wakko packs away the snacks?'
+    input: 'In the Animaniacs theme song, who plays the sax while Wakko packs away the snacks?',
   });
 
   const [
     { text: result1, sourceDocuments: sourceDocuments1 },
     { text: result2, sourceDocuments: sourceDocuments2 },
-    { text: result3, sourceDocuments: sourceDocuments3 }
+    { text: result3, sourceDocuments: sourceDocuments3 },
   ] = await Promise.all([testPromise1, testPromise2, testPromise3]);
 
   console.log(sourceDocuments1, sourceDocuments2, sourceDocuments3);
