@@ -30,6 +30,7 @@
     "chain-basic": "node src/chain-basic.js",
     "chain-documents": "node src/chain-documents.js",
     "memory": "node src/memory.js",
+    "agent": "node src/agent.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check ."
   },
